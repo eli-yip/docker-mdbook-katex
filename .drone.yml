@@ -9,7 +9,7 @@ steps:
       - name: dockersock
         path: /var/run
     commands:
-      - sleep
+      - sleep 5
       - docker ps -a
 
   - name: build
@@ -17,8 +17,28 @@ steps:
     volumes:
       - name: dockersock
         path: /var/run
-    command:
-      - docker build -t mdbook-katex:1.0 .
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_TOKEN:
+        from_secret: docker_token
+    commands:
+      - echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
+      - docker build -t eliyip/mdbook-katex:${DRONE_TAG##v} .
+
+  - name: publish
+    image: docker:dind
+    volumes:
+      - name: dockersock
+        path: /var/run
+    environment:
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_TOKEN:
+        from_secret: docker_token
+    commands:
+      - echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
+      - docker push eliyip/mdbook-katex:${DRONE_TAG##v}
 
 services:
   - name: docker
@@ -32,3 +52,6 @@ volumes:
   - name: dockersock
     temp: {}
 
+trigger:
+  event:
+    - tag
