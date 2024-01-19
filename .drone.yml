@@ -26,7 +26,7 @@ steps:
       - echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
       - docker build -t eliyip/mdbook-katex:${DRONE_TAG##v} .
       - docker tag eliyip/mdbook-katex:${DRONE_TAG##v} eliyip/mdbook-katex:latest
-      - docker run -v /var/run/docker.sock:/var/run/docker.sock dslim/docker-slim build --tag eliyip/mdbook-katex:${DRONE_TAG##v}-slim --target eliyip/mdbook-katex:${DRONE_TAG##v} --http-probe=false
+      - docker run -v /var/run/docker.sock:/var/run/docker.sock dslim/docker-slim build --tag eliyip/mdbook-katex:${DRONE_TAG##v}-slim --target eliyip/mdbook-katex:${DRONE_TAG##v} --http-probe=false --include-shell
       - docker tag eliyip/mdbook-katex:${DRONE_TAG##v}-slim eliyip/mdbook-katex:latest-slim
 
   - name: publish
