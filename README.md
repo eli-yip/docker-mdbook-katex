@@ -6,16 +6,16 @@ Alpine-based Docker Image for [mdbook](https://github.com/rust-lang/mdBook) and 
 
 ## Getting started
 
-You can pull `latest` tag with command:
+You can pull `latest`(about `10MB`) or `latest-slim`(about `5MB`, recommend) tag with command:
 
 ```bash
-docker pull eliyip/mdbook-katex:latest
+docker pull eliyip/mdbook-katex:latest-slim
 ```
 
 Then use like this(`project` stores your mdbook files):
 
 ```bash
-docker run --rm -v ./project:/book eliyip/mdbook-katex:latest
+docker run --rm -v ./project:/book eliyip/mdbook-katex:latest-slim
 ```
 
 Or you can use it for preview with `docker compose`:
@@ -25,7 +25,7 @@ version: '3'
 
 services:
   mdbook:
-    image: eliyip/mdbook-katex:latest
+    image: eliyip/mdbook-katex:latest-slim
     container_name: mdbook
     ports:
       - 3000:3000
@@ -48,7 +48,7 @@ name: default
 
 steps:
   - name: build
-    image: eliyip/mdbook-katex:latest
+    image: eliyip/mdbook-katex:latest-slim
     commands:
       - mdbook build
 
