@@ -22,12 +22,21 @@ steps:
         from_secret: docker_username
       DOCKER_TOKEN:
         from_secret: docker_token
+      PRIVATE_DOCKER_USERNAME:
+        from_secret: private_docker_username
+      PRIVATE_DOCKER_TOKEN:
+        from_secret: private_docker_token
+      PRIVATE_DOCKER_HUB:
+        from_secret: private_docker_hub
     commands:
+      - docker version
+      - docker info
       - echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
-      - docker build -t eliyip/mdbook-katex:${DRONE_TAG##v} .
-      - docker tag eliyip/mdbook-katex:${DRONE_TAG##v} eliyip/mdbook-katex:latest
-      - docker run -v /var/run/docker.sock:/var/run/docker.sock dslim/docker-slim build --tag eliyip/mdbook-katex:${DRONE_TAG##v}-slim --target eliyip/mdbook-katex:${DRONE_TAG##v} --http-probe=false --include-shell
-      - docker tag eliyip/mdbook-katex:${DRONE_TAG##v}-slim eliyip/mdbook-katex:latest-slim
+      - docker build -t "eliyip/mdbook-katex:${DRONE_TAG##v}" .
+      - docker tag "eliyip/mdbook-katex:${DRONE_TAG##v}" eliyip/mdbook-katex:latest
+      - echo $PRIVATE_DOCKER_TOKEN | docker login $PRIVATE_DOCKER_HUB -u $PRIVATE_DOCKER_USERNAME --password-stdin
+      - docker run -v /var/run/docker.sock:/var/run/docker.sock hub.momoai.me/slim:1.40.10 build --tag "eliyip/mdbook-katex:${DRONE_TAG##v}-slim" --target "eliyip/mdbook-katex:${DRONE_TAG##v}" --http-probe=false --include-shell --include-path "/app"
+      - docker tag "eliyip/mdbook-katex:${DRONE_TAG##v}-slim" eliyip/mdbook-katex:latest-slim
 
   - name: publish
     image: docker:24.0.7-cli

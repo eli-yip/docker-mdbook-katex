@@ -13,9 +13,9 @@ RUN apk add curl && \
 
 FROM alpine:3.19
 
-COPY --from=Builder /app/mdbook /usr/bin/mdbook
-COPY --from=Builder /app/mdbook-katex /usr/bin/mdbook-katex
+COPY --from=Builder /app/mdbook /app/mdbook
+COPY --from=Builder /app/mdbook-katex /app/mdbook-katex
 
 WORKDIR /book
-ENTRYPOINT ["/usr/bin/mdbook"]
+ENTRYPOINT ["/app/mdbook"]
 CMD ["build"]
