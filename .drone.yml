@@ -29,8 +29,6 @@ steps:
       PRIVATE_DOCKER_HUB:
         from_secret: private_docker_hub
     commands:
-      - docker version
-      - docker info
       - echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
       - docker build -t "eliyip/mdbook-katex:${DRONE_TAG##v}" .
       - docker tag "eliyip/mdbook-katex:${DRONE_TAG##v}" eliyip/mdbook-katex:latest
