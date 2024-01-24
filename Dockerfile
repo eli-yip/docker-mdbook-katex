@@ -16,6 +16,7 @@ FROM alpine:3.19
 COPY --from=Builder /app/mdbook /app/mdbook
 COPY --from=Builder /app/mdbook-katex /app/mdbook-katex
 
+ENV PATH "/app:${PATH}"
 WORKDIR /book
 ENTRYPOINT ["/app/mdbook"]
 CMD ["build"]
