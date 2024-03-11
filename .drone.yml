@@ -4,7 +4,7 @@ name: default
 
 steps:
   - name: test
-    image: docker:24.0.7-cli
+    image: docker:25.0.4-cli
     volumes:
       - name: dockersock
         path: /var/run
@@ -13,7 +13,7 @@ steps:
       - docker ps -a
 
   - name: build
-    image: docker:24.0.7-cli
+    image: docker:25.0.4-cli
     volumes:
       - name: dockersock
         path: /var/run
@@ -37,7 +37,7 @@ steps:
       - docker tag "eliyip/mdbook-katex:${DRONE_TAG##v}-slim" eliyip/mdbook-katex:latest-slim
 
   - name: publish
-    image: docker:24.0.7-cli
+    image: docker:25.0.4-cli
     volumes:
       - name: dockersock
         path: /var/run
@@ -55,7 +55,7 @@ steps:
 
 services:
   - name: docker
-    image: docker:24.0.7-dind
+    image: docker:25.0.4-dind
     privileged: true
     volumes:
       - name: dockersock
