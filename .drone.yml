@@ -33,7 +33,7 @@ steps:
       - docker build -t "eliyip/mdbook-katex:${DRONE_TAG##v}" .
       - docker tag "eliyip/mdbook-katex:${DRONE_TAG##v}" eliyip/mdbook-katex:latest
       - echo $PRIVATE_DOCKER_TOKEN | docker login $PRIVATE_DOCKER_HUB -u $PRIVATE_DOCKER_USERNAME --password-stdin
-      - docker run -v /var/run/docker.sock:/var/run/docker.sock hub.momoai.me/slim:1.40.10 build --tag "eliyip/mdbook-katex:${DRONE_TAG##v}-slim" --target "eliyip/mdbook-katex:${DRONE_TAG##v}" --http-probe=false --include-shell --include-path "/app"
+      - docker run -v /var/run/docker.sock:/var/run/docker.sock hub.momoai.me/slim:1.40.11 build --tag "eliyip/mdbook-katex:${DRONE_TAG##v}-slim" --target "eliyip/mdbook-katex:${DRONE_TAG##v}" --http-probe=false --include-shell --include-path "/app"
       - docker tag "eliyip/mdbook-katex:${DRONE_TAG##v}-slim" eliyip/mdbook-katex:latest-slim
 
   - name: publish
