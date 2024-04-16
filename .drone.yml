@@ -4,16 +4,17 @@ name: default
 
 steps:
   - name: test
-    image: docker:25.0.4-cli
+    image: docker:26-cli
     volumes:
       - name: dockersock
         path: /var/run
     commands:
       - sleep 5
-      - docker ps -a
+      - until docker ps -a; do sleep 1; done
+      - echo "Docker is ready"
 
   - name: build
-    image: docker:25.0.4-cli
+    image: docker:26-cli
     volumes:
       - name: dockersock
         path: /var/run
@@ -30,7 +31,7 @@ steps:
       - docker tag "eliyip/mdbook-katex:${DRONE_TAG##v}-slim" eliyip/mdbook-katex:latest-slim
 
   - name: publish
-    image: docker:25.0.4-cli
+    image: docker:26-cli
     volumes:
       - name: dockersock
         path: /var/run
@@ -48,7 +49,7 @@ steps:
 
 services:
   - name: docker
-    image: docker:25.0.4-dind
+    image: docker:26-dind
     privileged: true
     volumes:
       - name: dockersock
